@@ -23,6 +23,7 @@ namespace AddressBook.Helpers
         public void Create(Contact contact)
         {
             _contacts.Add(contact);
+            _contacts = _contacts.OrderBy(x => x.Id).ToList();
         }
 
         public IEnumerable<Contact> GetAll()

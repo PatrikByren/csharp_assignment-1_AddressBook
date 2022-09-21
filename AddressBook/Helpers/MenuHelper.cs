@@ -14,8 +14,8 @@ namespace AddressBook.Helpers
     internal interface IMenuHelper
     {
         public void MainMenu();
-        public void AllContactMenu();
-        public void AddContactMenu();
+        public void ShowAllContactMenu();
+        public void CreateContactMenu();
         public void UpdateContactMenu(int id);
         public void ErrorText();
     }
@@ -33,19 +33,19 @@ namespace AddressBook.Helpers
                 Console.WriteLine("#4. Find a Contact");
                 Console.WriteLine("#Q. Close Address Book");
                 Console.Write("\nChoose an Option: ");
-                switch (Console.ReadLine().ToLower())
+                switch (Console.ReadLine()?.ToLower())
                 {
                     case "1":
-                        AllContactMenu();
+                        ShowAllContactMenu();
                         break;
                     case "2":
-                        AddContactMenu();
+                        CreateContactMenu();
                         break;
                     case "3":
                         try
                         {
                             Console.Write("ID: ");
-                            contactHelper.Remove(int.Parse(Console.ReadLine()));
+                            contactHelper.Remove(int.Parse(Console.ReadLine())); 
                         }
                         catch 
                         {
@@ -63,7 +63,7 @@ namespace AddressBook.Helpers
                 }
             }while(true);
         }
-        public void AllContactMenu()
+        public void ShowAllContactMenu()
         {
             Console.Clear();
             Console.WriteLine("----- ALL CONTACT MENU -----");
@@ -83,7 +83,7 @@ namespace AddressBook.Helpers
                 Console.WriteLine($"{contact.FullName}\t\nPhone number: {contact.PhoneNumber}\nEmail: {contact.Email}\n\nAdress: \n{contact.PostAddress}");
                 Console.WriteLine("\n--------------------------------------------------------------------");
                 Console.Write("\nEXIT  to  menu: \"E\"\nCHANGE details: \"C\"\nDELETE contact: \"D\"\n\nChoose an option: ");
-                switch (Console.ReadLine().ToLower())
+                switch (Console.ReadLine()?.ToLower())
                 {
                     case "e":
                         MainMenu();
@@ -106,7 +106,7 @@ namespace AddressBook.Helpers
 
  
         }
-        public void AddContactMenu()
+        public void CreateContactMenu()
         {
             Contact contact = new Contact();
             int id = 0;
@@ -115,7 +115,7 @@ namespace AddressBook.Helpers
             {
                 contactId=item.Id;
                 id++;
-            if (contactId != id) { break; }
+            if (contactId != id) { }
             }
             if ( contactId == id)
                 {
@@ -137,16 +137,16 @@ namespace AddressBook.Helpers
             //Console.Write("Street name: ");
             //Console.Write("Postal Code: ");
             //Console.WriteLine("City: ");
-            Console.Write("Contact Added, press ANY key to return");
+            Console.Write("Contact Added...");
             Console.ReadKey();
             contactHelper.Create(contact);
         }
 
         public void UpdateContactMenu(int id)
         {
-            Console.WriteLine("What do you want to change? \n#1. First name\n#2. Last name\n#3. Phone number\n#4. Email\n#5. Street name\n#6. Postal code\n#7. City");
+            Console.WriteLine("What do you want to change? \n#1. First name\n#2. Last name\n#3. Phone number\n#4. Email\n#5. Street address\n#6. Postal code\n#7. City");
             string optionsNumber = Console.ReadLine();
-            string newValue;
+            string? newValue;
             switch (optionsNumber)
             {
                 case "1":
@@ -170,7 +170,7 @@ namespace AddressBook.Helpers
                     contactHelper.Update(id, optionsNumber, newValue);
                     break;
                 case "5":
-                    Console.Write("Street name: ");
+                    Console.Write("Street address: ");
                     newValue = Console.ReadLine();
                     contactHelper.Update(id, optionsNumber, newValue);
                     break;
@@ -185,9 +185,7 @@ namespace AddressBook.Helpers
                     contactHelper.Update(id, optionsNumber, newValue);
                     break;
                 default:
-                    Console.Clear();
-                    Console.WriteLine("Invalid option!");
-                    UpdateContactMenu(id);
+                    ErrorText();
                     break;
             }    
         }
