@@ -1,7 +1,9 @@
 ﻿using AddressBook.Models;
+using Microsoft.VisualBasic.FileIO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -32,11 +34,27 @@ namespace AddressBook.Helpers
         {
             return _contacts.FirstOrDefault(x => x.Id == id);
         }
-
         public void Remove(int id)
         {
-                _contacts = _contacts.Where(x => x.Id != id).ToList();
-                Console.WriteLine("Contact Removed");
+            foreach (var item in _contacts)
+            {
+                if(item.Id==id)
+                {
+                    _contacts = _contacts.Where(x => x.Id != id).ToList();
+                    Console.Write("Contact Removed");
+                }
+                else
+                {
+                    Console.WriteLine("Contatact not found!");
+                    
+                }
+                Console.ReadKey();
+
+            }
+
+
+
+
         }
 
         public void Update(int id, string optionsNumber, string newValue)
@@ -70,7 +88,7 @@ namespace AddressBook.Helpers
                             item.PhoneNumber = newValue;
                         }
                     }
-                    break;
+                    break; 
                 case "4":
                     foreach (var item in _contacts)
                     {

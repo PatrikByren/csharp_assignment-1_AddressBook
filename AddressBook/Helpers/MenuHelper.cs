@@ -17,6 +17,7 @@ namespace AddressBook.Helpers
         public void AllContactMenu();
         public void AddContactMenu();
         public void UpdateContactMenu(int id);
+        public void ErrorText();
     }
     internal class MenuHelper : IMenuHelper
     {
@@ -77,8 +78,8 @@ namespace AddressBook.Helpers
             try
             {
                 int idOption = int.Parse(Console.ReadLine());
-                Console.Clear();
                 Contact contact = contactHelper.GetDetails(idOption);
+                Console.Clear();
                 Console.WriteLine($"{contact.FullName}\t\nPhone number: {contact.PhoneNumber}\nEmail: {contact.Email}\n\nAdress: \n{contact.PostAddress}");
                 Console.WriteLine("\n--------------------------------------------------------------------");
                 Console.Write("\nMain menu: \"E\"\nChange details: \"C\"\nDelete Contact: \"D\"\n\nChoose an option: ");
@@ -94,13 +95,13 @@ namespace AddressBook.Helpers
                         contactHelper.Remove(idOption);
                         break;
                     default:
-                        Console.WriteLine("Wrong option!");
+                        ErrorText();
                         break;
                 }
             }
             catch
             {
-                Console.WriteLine("Wrong option!");
+            ErrorText();
             }
 
  
@@ -143,13 +144,16 @@ namespace AddressBook.Helpers
 
         public void UpdateContactMenu(int id)
         {
-            string newValue=null!;
-            string optionsNumber;
             Console.Write("What do you want to change? \n#1. First name\n#2. Last name\n#3. Phone number\n#4. Email\n#5. Street name\n#6. Postal code\n#7. City");
-            optionsNumber = Console.ReadLine();
+            string optionsNumber = Console.ReadLine();
             Console.Write("Update to: ");
-            newValue = Console.ReadLine();
+            string newValue = Console.ReadLine();
             contactHelper.Update(id, optionsNumber, newValue);
+        }
+        public void ErrorText()
+        {
+            Console.Write("Invalid option\\n Going back to main menu");
+            Console.ReadKey();
         }
 
     }
