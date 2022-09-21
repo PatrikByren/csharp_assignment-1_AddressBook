@@ -58,7 +58,7 @@ namespace AddressBook.Helpers
                     case "q":
                         Environment.Exit(0);
                         break;
-                    default: 
+                    default: ErrorText();
                         break;
                 }
             }while(true);
@@ -82,7 +82,7 @@ namespace AddressBook.Helpers
                 Console.Clear();
                 Console.WriteLine($"{contact.FullName}\t\nPhone number: {contact.PhoneNumber}\nEmail: {contact.Email}\n\nAdress: \n{contact.PostAddress}");
                 Console.WriteLine("\n--------------------------------------------------------------------");
-                Console.Write("\nMain menu: \"E\"\nChange details: \"C\"\nDelete Contact: \"D\"\n\nChoose an option: ");
+                Console.Write("\nEXIT  to  menu: \"E\"\nCHANGE details: \"C\"\nDELETE contact: \"D\"\n\nChoose an option: ");
                 switch (Console.ReadLine().ToLower())
                 {
                     case "e":
@@ -146,7 +146,7 @@ namespace AddressBook.Helpers
         {
             Console.WriteLine("What do you want to change? \n#1. First name\n#2. Last name\n#3. Phone number\n#4. Email\n#5. Street name\n#6. Postal code\n#7. City");
             string optionsNumber = Console.ReadLine();
-            string newValue = "";
+            string newValue;
             switch (optionsNumber)
             {
                 case "1":
@@ -193,7 +193,7 @@ namespace AddressBook.Helpers
         }
         public void ErrorText()
         {
-            Console.Write("Invalid option!\\n Going back to main menu");
+            Console.Write("\nInvalid option!\nGoing back to main menu...");
             Console.ReadKey();
         }
 

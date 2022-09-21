@@ -38,23 +38,14 @@ namespace AddressBook.Helpers
         {
             foreach (var item in _contacts)
             {
-                if(item.Id==id)
+                if (item.Id == id)
                 {
                     _contacts = _contacts.Where(x => x.Id != id).ToList();
                     Console.Write("Contact Removed");
+                    Console.ReadKey();
+                    break;
                 }
-                else
-                {
-                    Console.WriteLine("Contatact not found!");
-                    
-                }
-                Console.ReadKey();
-
             }
-
-
-
-
         }
 
         public void Update(int id, string optionsNumber, string newValue)
