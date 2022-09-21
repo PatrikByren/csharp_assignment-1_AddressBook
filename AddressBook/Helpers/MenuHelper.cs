@@ -144,15 +144,56 @@ namespace AddressBook.Helpers
 
         public void UpdateContactMenu(int id)
         {
-            Console.Write("What do you want to change? \n#1. First name\n#2. Last name\n#3. Phone number\n#4. Email\n#5. Street name\n#6. Postal code\n#7. City");
+            Console.WriteLine("What do you want to change? \n#1. First name\n#2. Last name\n#3. Phone number\n#4. Email\n#5. Street name\n#6. Postal code\n#7. City");
             string optionsNumber = Console.ReadLine();
-            Console.Write("Update to: ");
-            string newValue = Console.ReadLine();
-            contactHelper.Update(id, optionsNumber, newValue);
+            string newValue = "";
+            switch (optionsNumber)
+            {
+                case "1":
+                    Console.Write("First name: ");
+                    newValue = Console.ReadLine();
+                    contactHelper.Update(id, optionsNumber, newValue);
+                    break;
+                case "2":
+                    Console.Write("Last name: ");
+                    newValue = Console.ReadLine();
+                    contactHelper.Update(id, optionsNumber, newValue);
+                    break;
+                case "3":
+                    Console.Write("Phone number: ");
+                    newValue = Console.ReadLine();
+                    contactHelper.Update(id, optionsNumber, newValue);
+                    break;
+                case "4":
+                    Console.Write("Email: ");
+                    newValue = Console.ReadLine();
+                    contactHelper.Update(id, optionsNumber, newValue);
+                    break;
+                case "5":
+                    Console.Write("Street name: ");
+                    newValue = Console.ReadLine();
+                    contactHelper.Update(id, optionsNumber, newValue);
+                    break;
+                case "6":
+                    Console.Write("Postal Code: ");
+                    newValue = Console.ReadLine();
+                    contactHelper.Update(id, optionsNumber, newValue);
+                    break;
+                case "7":
+                    Console.Write("City: ");
+                    newValue = Console.ReadLine();
+                    contactHelper.Update(id, optionsNumber, newValue);
+                    break;
+                default:
+                    Console.Clear();
+                    Console.WriteLine("Invalid option!");
+                    UpdateContactMenu(id);
+                    break;
+            }    
         }
         public void ErrorText()
         {
-            Console.Write("Invalid option\\n Going back to main menu");
+            Console.Write("Invalid option!\\n Going back to main menu");
             Console.ReadKey();
         }
 
