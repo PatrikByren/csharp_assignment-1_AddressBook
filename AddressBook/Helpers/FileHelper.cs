@@ -35,7 +35,7 @@ namespace AddressBook.Helpers
             {
 
                 using var sr = new StreamReader(_filePath);
-                Console.Write("Addressbook uploading...");
+                Console.Write("Addressbook uploaded... Press a Key!");
                 Console.ReadKey();
                 return JsonConvert.DeserializeObject<List<Contact>>(sr.ReadToEnd());
 

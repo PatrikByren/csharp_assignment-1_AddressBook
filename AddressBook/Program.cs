@@ -4,6 +4,6 @@ using System.Collections.Generic;
 
 MenuHelper menuHelper = new MenuHelper();
 menuHelper.Run();
-menuHelper.MainMenu();
+
 
     

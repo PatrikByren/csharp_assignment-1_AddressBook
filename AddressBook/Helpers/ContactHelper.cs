@@ -17,6 +17,7 @@ namespace AddressBook.Helpers
         public IEnumerable<Contact> GetAll();
         public Contact GetDetails(int id);
         public void Update(int id, string optionsNumber, string newValue);
+        public void Run();
     }
     internal class ContactHelper : IContactHelper
     {
@@ -133,5 +134,10 @@ namespace AddressBook.Helpers
             Console.ReadKey();
 
         }
+        public void Run()
+        {
+            _contacts = fileHelper.Read();
+        }
+
     }
 }

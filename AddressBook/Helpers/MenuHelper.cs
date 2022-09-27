@@ -202,7 +202,8 @@ namespace AddressBook.Helpers
         }
         public void Run()
         {
-            fileHelper.Read();
+            contactHelper.Run();
+            MainMenu();
         }
     }
 }
