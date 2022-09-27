@@ -1,5 +1,6 @@
 ﻿using AddressBook.Models;
 using Microsoft.VisualBasic.FileIO;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,11 +20,15 @@ namespace AddressBook.Helpers
     }
     internal class ContactHelper : IContactHelper
     {
+        FileHelper fileHelper = new FileHelper();
         private List<Contact> _contacts = new List<Contact>();
         public void Create(Contact contact)
         {
             _contacts.Add(contact);
             _contacts = _contacts.OrderBy(x => x.Id).ToList();
+            fileHelper.Save(_contacts);
+            Console.Write("\nContact Succesfully created! :) :)");
+            Console.ReadKey();
         }
 
         public IEnumerable<Contact> GetAll()
@@ -41,8 +46,11 @@ namespace AddressBook.Helpers
             {
                 if (item.Id == id)
                 {
+                    Console.Clear();
                     _contacts = _contacts.Where(x => x.Id != id).ToList();
-                    Console.Write("Contact Removed");
+                    Console.Write($"Contact \"{item.FullName}\" Removed");
+                    fileHelper.Save(_contacts);
+                    Console.WriteLine("\nContact Succesfully Removed! :) :)");
                     Console.ReadKey();
                     break;
                 }
@@ -80,7 +88,7 @@ namespace AddressBook.Helpers
                             item.PhoneNumber = newValue;
                         }
                     }
-                    break; 
+                    break;
                 case "4":
                     foreach (var item in _contacts)
                     {
@@ -120,6 +128,10 @@ namespace AddressBook.Helpers
                 default:
                     break;
             }
+            fileHelper.Save(_contacts);
+            Console.Write("\nContact succesfully Uppdated! :) :)");
+            Console.ReadKey();
+
         }
     }
 }
