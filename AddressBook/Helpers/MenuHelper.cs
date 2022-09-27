@@ -13,18 +13,14 @@ namespace AddressBook.Helpers
 {
     internal interface IMenuHelper
     {
-        public void MainMenu();
-        public void ShowAllContactMenu();
-        public void CreateContactMenu();
-        public void UpdateContactMenu(int id);
-        public void ErrorText();
-        public void Run();
+
+        public void RunProgram();
     }
     internal class MenuHelper : IMenuHelper
     {
         IContactHelper contactHelper = new ContactHelper();
         IFileHelper fileHelper = new FileHelper();
-        public void MainMenu()
+        private void MainMenu()
         {
             do
             {
@@ -47,7 +43,7 @@ namespace AddressBook.Helpers
                     case "3":
                         try
                         {
-                            Console.Write("ID: ");
+                            Console.Write("Enter ID to remove contact: ");
                             contactHelper.Remove(int.Parse(Console.ReadLine() ?? ""));
                         }
                         catch
@@ -57,7 +53,7 @@ namespace AddressBook.Helpers
                         }
                         break;
                     case "4":
-                        Console.Write("Enter the new file path and press Enter or just press Enter to exit to menu...\nNew file path:");
+                        Console.Write("Enter the new file path and OR just press Enter to exit to main menu...\nNew file path / Enter:");
                         fileHelper.NewFilePath(Console.ReadLine() ?? null!);
                         
                         break;
@@ -70,15 +66,15 @@ namespace AddressBook.Helpers
                 }
             } while (true);
         }
-        public void ShowAllContactMenu()
+        private void ShowAllContactMenu()
         {
             Console.Clear();
             Console.WriteLine("----- CONTACT MENU -----");
-            Console.WriteLine("Name:\t\t\t\t\tID:");
+            Console.WriteLine("ID:\tName:");
             Console.WriteLine("--------------------------------------------------------------------");
             foreach (var item in contactHelper.GetAll())
             {
-                Console.WriteLine($"{item.FullName}\t\t\t\t{item.Id}");
+                Console.WriteLine($"{item.Id}\t{item.FullName}");
             }
             Console.WriteLine("\n--------------------------------------------------------------------");
             Console.Write("\nEnter a contact ID to see details: ");
@@ -90,7 +86,7 @@ namespace AddressBook.Helpers
                 Console.WriteLine("----- CONTACT MENU -----\n");
                 Console.WriteLine($"{contact.FullName}\t\nPhone number: {contact.PhoneNumber}\nEmail: {contact.Email}\n\nAdress: \n{contact.PostAddress}");
                 Console.WriteLine("\n--------------------------------------------------------------------");
-                Console.Write("\nExit  to  MENU: \"m\"\nDetails CHANGE: \"C\"\nContact DELETE: \"D\"\n\nChoose an option: ");
+                Console.Write("\nExit  to  MENU: \"M\"\nDetails CHANGE: \"C\"\nContact DELETE: \"D\"\n\nChoose an option: ");
                 switch (Console.ReadLine()?.ToLower())
                 {
                     case "m":
@@ -114,7 +110,7 @@ namespace AddressBook.Helpers
 
 
         }
-        public void CreateContactMenu()
+        private void CreateContactMenu()
         {
             Contact contact = new Contact();
             int id = 0;
@@ -148,7 +144,7 @@ namespace AddressBook.Helpers
             contactHelper.Create(contact);
         }
 
-        public void UpdateContactMenu(int id)
+        private void UpdateContactMenu(int id)
         {
             Console.Write("What do you want to change? \n#1. First name\n#2. Last name\n#3. Phone number\n#4. Email\n#5. Street address\n#6. Postal code\n#7. City\nOption?");
             string optionsNumber = Console.ReadLine() ??"";
@@ -195,14 +191,14 @@ namespace AddressBook.Helpers
                     break;
             }
         }
-        public void ErrorText()
+        private void ErrorText()
         {
             Console.Write("\nInvalid option!\nGoing back to main menu...");
             Console.ReadKey();
         }
-        public void Run()
+        public void RunProgram()
         {
-            contactHelper.Run();
+            contactHelper.ReadFile();
             MainMenu();
         }
     }

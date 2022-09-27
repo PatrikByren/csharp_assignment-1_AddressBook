@@ -17,7 +17,7 @@ namespace AddressBook.Helpers
         public IEnumerable<Contact> GetAll();
         public Contact GetDetails(int id);
         public void Update(int id, string optionsNumber, string newValue);
-        public void Run();
+        public void ReadFile();
     }
     internal class ContactHelper : IContactHelper
     {
@@ -43,6 +43,7 @@ namespace AddressBook.Helpers
         }
         public void Remove(int id)
         {
+            Console.Write("Wrong ID");
             foreach (var item in _contacts)
             {
                 if (item.Id == id)
@@ -52,10 +53,10 @@ namespace AddressBook.Helpers
                     Console.Write($"Contact \"{item.FullName}\" Removed");
                     fileHelper.Save(_contacts);
                     Console.WriteLine("\nContact Succesfully Removed! :) :)");
-                    Console.ReadKey();
                     break;
                 }
             }
+            Console.ReadKey();
         }
 
         public void Update(int id, string optionsNumber, string newValue)
@@ -134,7 +135,7 @@ namespace AddressBook.Helpers
             Console.ReadKey();
 
         }
-        public void Run()
+        public void ReadFile()
         {
             _contacts = fileHelper.Read();
         }

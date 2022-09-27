@@ -2,8 +2,8 @@
 using AddressBook.Models;
 using System.Collections.Generic;
 
-MenuHelper menuHelper = new MenuHelper();
-menuHelper.Run();
+IMenuHelper menuHelper = new MenuHelper();
+menuHelper.RunProgram();
 
 
     

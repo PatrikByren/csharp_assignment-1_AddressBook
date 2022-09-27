@@ -26,21 +26,26 @@ namespace AddressBook.Helpers
         }
         public void Save(List<Contact> list)
         {
-            using var sw = new StreamWriter(_filePath);
-            sw.WriteLine(JsonConvert.SerializeObject(list));
+            try
+            {
+                using var sw = new StreamWriter(_filePath);
+                sw.WriteLine(JsonConvert.SerializeObject(list));
+            }
+            catch { Console.WriteLine("Unable to save! Check File Path!"); Console.ReadKey(); }
         }
         public List<Contact> Read()
         {
+            Console.WriteLine($"Looking for addressbook in {_filePath} ... ");
             try
             {
 
                 using var sr = new StreamReader(_filePath);
-                Console.Write("Addressbook uploaded... Press a Key!");
+                Console.Write("Addressbook found... Press a Key!");
                 Console.ReadKey();
                 return JsonConvert.DeserializeObject<List<Contact>>(sr.ReadToEnd());
 
             }
-            catch { Console.Write("No adressbook to upload, Create a new addressbook"); Console.ReadKey(); }
+            catch { Console.Write("No adressbook to found, Create a new addressbook... Press a Key!"); Console.ReadKey(); }
             return null!;
         }
 
