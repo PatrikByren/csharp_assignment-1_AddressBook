@@ -11,18 +11,17 @@ using System.Threading.Tasks;
 
 namespace AddressBook.Helpers
 {
-    internal interface IMenuHelper
+    internal interface IMenuHelper //Med ett interface tar jag hjälp av vad som ska göras i Menyn som ska instansieras från andra classer
     {
-
-        public void RunProgram();
+        public void RunProgram(); //Behöver endast 1 metod i Interfacet, då resten är 'privata'
     }
     internal class MenuHelper : IMenuHelper
     {
-        IContactHelper contactHelper = new ContactHelper();
-        IFileHelper fileHelper = new FileHelper();
-        private void MainMenu()
+        IContactHelper contactHelper = new ContactHelper(); //Instansierar klassen icontacthelper
+        IFileHelper fileHelper = new FileHelper(); //Samt ifilehelper
+        private void MainMenu() //Main menu där du har val, samt kallar på andra metoder efter val
         {
-            do
+            do //Loopar här ifrån
             {
                 Console.Clear();
                 Console.WriteLine("----- MAIN MENU -----");
@@ -32,39 +31,39 @@ namespace AddressBook.Helpers
                 Console.WriteLine("#4. Settings");
                 Console.WriteLine("#Q. Close Address Book");
                 Console.Write("\nChoose an Option: ");
-                switch (Console.ReadLine()?.ToLower())
+                switch (Console.ReadLine()?.ToLower()) //Läser in valet till gemen
                 {
                     case "1":
-                        ShowAllContactMenu();
+                        ShowAllContactMenu(); //kör metoder
                         break;
                     case "2":
-                        CreateContactMenu();
+                        CreateContactMenu(); //kör metoden
                         break;
                     case "3":
                         try
                         {
                             Console.Write("Enter ID to remove contact: ");
-                            contactHelper.Remove(int.Parse(Console.ReadLine() ?? ""));
+                            contactHelper.Remove(int.Parse(Console.ReadLine() ?? "")); //kör metoden om ett nummer har lagts in
                         }
                         catch
                         {
-                            Console.Write("Wrong Key!");
+                            Console.Write("Wrong Key!"); // annars meddelar jag att det är fel kanpptryck
                             Console.ReadKey();
                         }
                         break;
                     case "4":
                         Console.Write("Enter the new file path and OR just press Enter to exit to main menu...\nNew file path / Enter:");
-                        fileHelper.NewFilePath(Console.ReadLine() ?? null!);
+                        fileHelper.NewFilePath(Console.ReadLine() ?? null!); //Kallar på metoden och skickar med det som har skrivits, Null värde är OK.
                         
                         break;
                     case "q":
-                        Environment.Exit(0);
+                        Environment.Exit(0); //Avslutar programmet
                         break;
                     default:
-                        ErrorText();
+                        ErrorText(); //Kallar på metoden
                         break;
                 }
-            } while (true);
+            } while (true); //Sant som gör det till en evighetsloop
         }
         private void ShowAllContactMenu()
         {
@@ -72,34 +71,35 @@ namespace AddressBook.Helpers
             Console.WriteLine("----- CONTACT MENU -----");
             Console.WriteLine("ID:\tName:");
             Console.WriteLine("--------------------------------------------------------------------");
-            foreach (var item in contactHelper.GetAll())
+            foreach (var item in contactHelper.GetAll()) //Kallar på metoden för att hämta lista
             {
-                Console.WriteLine($"{item.Id}\t{item.FullName}");
+                Console.WriteLine($"{item.Id}\t{item.FullName}"); //Visar alla ID och hela namn i listan.
             }
             Console.WriteLine("\n--------------------------------------------------------------------");
             Console.Write("\nEnter a contact ID to see details: ");
             try
             {
                 int idOption = int.Parse(Console.ReadLine() ?? "");
-                Contact contact = contactHelper.GetDetails(idOption);
+                Contact contact = contactHelper.GetDetails(idOption); //Gör en kontakt med hjälp av metoden.
                 Console.Clear();
                 Console.WriteLine("----- CONTACT MENU -----\n");
-                Console.WriteLine($"{contact.FullName}\t\nPhone number: {contact.PhoneNumber}\nEmail: {contact.Email}\n\nAdress: \n{contact.PostAddress}");
+                Console.WriteLine($"{contact.FullName}\t\nPhone number: {contact.PhoneNumber}\nEmail: " +
+                    $"{contact.Email}\n\nAdress: \n{contact.PostAddress}"); //Visar hela den kontakten
                 Console.WriteLine("\n--------------------------------------------------------------------");
-                Console.Write("\nExit  to  MENU: \"M\"\nDetails CHANGE: \"C\"\nContact DELETE: \"D\"\n\nChoose an option: ");
-                switch (Console.ReadLine()?.ToLower())
+                Console.Write("\n#1. Exit to menu\n#2. Change details\n#D. Delete contact\n\nOption: ");
+                switch (Console.ReadLine()?.ToLower()) 
                 {
-                    case "m":
-                        MainMenu();
+                    case "1":
+                        MainMenu();//kör metoden
                         break;
-                    case "c":
-                        UpdateContactMenu(idOption);
+                    case "2":
+                        UpdateContactMenu(idOption); //kör metoden och tar med idOption(alltså id'et på kontakten)
                         break;
                     case "d":
-                        contactHelper.Remove(idOption);
+                        contactHelper.Remove(idOption); //kör metoden och tar med idOption(alltså id'et på kontakten)
                         break;
                     default:
-                        ErrorText();
+                        ErrorText(); //kör metoden
                         break;
                 }
             }
@@ -110,9 +110,9 @@ namespace AddressBook.Helpers
 
 
         }
-        private void CreateContactMenu()
+        private void CreateContactMenu() //Skapar ny kontakt i menyn(ej till lista)
         {
-            Contact contact = new Contact();
+            Contact contact = new Contact(); //Gör en tom kontakt
             int id = 0;
             int contactId = 0;
             foreach (var item in contactHelper.GetAll())
@@ -126,7 +126,7 @@ namespace AddressBook.Helpers
                 id++;
             }
 
-            contact.Id = id;
+            contact.Id = id; //Sätter ID'et med koden ovan, kommer bli 1, 2, 3, 4 osv tar man bort kontakt kommer nästa kontakt få ärva dens nummer
             Console.Write("First name: ");
             contact.FirstName = Console.ReadLine() ?? "";
             Console.Write("Last name: ");
@@ -141,55 +141,15 @@ namespace AddressBook.Helpers
             contact.PostalCode = Console.ReadLine() ?? "";
             Console.Write("City: ");
             contact.City = Console.ReadLine() ?? "";
-            contactHelper.Create(contact);
+            contactHelper.Create(contact);//skickar kontakten jag har skapat med infon ovan till metoden.
         }
 
         private void UpdateContactMenu(int id)
         {
-            Console.Write("What do you want to change? \n#1. First name\n#2. Last name\n#3. Phone number\n#4. Email\n#5. Street address\n#6. Postal code\n#7. City\nOption?");
-            string optionsNumber = Console.ReadLine() ??"";
-            string? newValue;
-            switch (optionsNumber)
-            {
-                case "1":
-                    Console.Write("First name: ");
-                    newValue = Console.ReadLine();
-                    contactHelper.Update(id, optionsNumber, newValue ??"");
-                    break;
-                case "2":
-                    Console.Write("Last name: ");
-                    newValue = Console.ReadLine();
-                    contactHelper.Update(id, optionsNumber, newValue??"");
-                    break;
-                case "3":
-                    Console.Write("Phone number: ");
-                    newValue = Console.ReadLine();
-                    contactHelper.Update(id, optionsNumber, newValue??"");
-                    break;
-                case "4":
-                    Console.Write("Email: ");
-                    newValue = Console.ReadLine();
-                    contactHelper.Update(id, optionsNumber, newValue??"");
-                    break;
-                case "5":
-                    Console.Write("Street address: ");
-                    newValue = Console.ReadLine();
-                    contactHelper.Update(id, optionsNumber, newValue??"");
-                    break;
-                case "6":
-                    Console.Write("Postal Code: ");
-                    newValue = Console.ReadLine();
-                    contactHelper.Update(id, optionsNumber, newValue??"");
-                    break;
-                case "7":
-                    Console.Write("City: ");
-                    newValue = Console.ReadLine();
-                    contactHelper.Update(id, optionsNumber, newValue??"");
-                    break;
-                default:
-                    ErrorText();
-                    break;
-            }
+            Console.Write("What do you want to change? \n#1. First name\n#2. Last name\n#3. Phone number\n#4. Email\n#5. Street address\n#6. Postal code\n#7. City\nOption: ");
+
+            contactHelper.Update(id, Console.ReadLine() ?? null!); 
+           
         }
         private void ErrorText()
         {

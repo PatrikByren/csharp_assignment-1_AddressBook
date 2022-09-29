@@ -10,66 +10,69 @@ using System.Threading.Tasks;
 
 namespace AddressBook.Helpers
 {
-    internal interface IContactHelper
+    internal interface IContactHelper // Ett interface är skapas, dvs ett "kontrakt" av vad denna class måste innehålla.
     {
         public void Create(Contact contact); //Jag vill ta emot en Kontakt av typen kontakt
         public void Remove(int id); //För att ta bort en kontakt så måste ett int ID anges
-        public IEnumerable<Contact> GetAll();
-        public Contact GetDetails(int id);
-        public void Update(int id, string optionsNumber, string newValue);
-        public void ReadFile();
+        public IEnumerable<Contact> GetAll(); //Skickar ut en lista av IEunerble typ, dvs endast läsbar lista
+        public Contact GetDetails(int id); //För att se detaljerad vy av en kontakt måste ett ID anges, sedan skickar jag tillbaka en kontakt.
+        public void Update(int id, string optionsNumber); //För att uppdatera en kontakt anges Id, optionsNumber(vad som ska ändras)
+        public void ReadFile(); //Vid programm start vill jag se om det finns en kontaktbok att hämta.
     }
-    internal class ContactHelper : IContactHelper
+    internal class ContactHelper : IContactHelper //Jag kodar upp mitt interface
     {
-        FileHelper fileHelper = new FileHelper();
-        private List<Contact> _contacts = new List<Contact>();
+        IFileHelper fileHelper = new FileHelper(); //Instancerar min FileHelper.
+        private List<Contact> _contacts = new List<Contact>(); //Skapar en ny lista
         public void Create(Contact contact)
         {
-            _contacts.Add(contact);
-            _contacts = _contacts.OrderBy(x => x.Id).ToList();
-            fileHelper.Save(_contacts);
-            Console.Write("\nContact Succesfully created! :) :)");
-            Console.ReadKey();
+            _contacts.Add(contact); //Kontakten jag tar emot Adderar jag till listan
+            _contacts = _contacts.OrderBy(x => x.Id).ToList(); //Jag sorterar listan på ID nummer, för att när jag sätter ID numret så är min kod byggd att den måste sorteras för att inte riskera att få samma ID nummer som en tidigare kontakt.
+            fileHelper.Save(_contacts); //Jag sparar min kontakt till fil
+            Console.Write("\nContact Succesfully created! :) :)"); //Har systemet inte kraschat så har kontakten sparas
+            Console.ReadKey();// jag saktar ner och låter användaren se det
         }
 
         public IEnumerable<Contact> GetAll()
         {
-            return _contacts;
+            return _contacts; //Kallar man på denna metod så får man tillbaka en LÄSbar lista! 
         }
 
         public Contact GetDetails(int id)
         {
-            return _contacts.FirstOrDefault(x => x.Id == id);
+            return _contacts.FirstOrDefault(x => x.Id == id); //Använder mig av lamba uttryck för att skicka tillbaka en detaljerad kontakt.
         }
         public void Remove(int id)
         {
-            Console.Write("Wrong ID");
-            foreach (var item in _contacts)
+            Console.Write("Wrong ID"); //Denna har jag "fuskat" in, kommer endast att hinna visas om det inte finns en kontakt med korrekt ID-nummer.
+            foreach (var item in _contacts) //Letar i min lista 
             {
-                if (item.Id == id)
+                if (item.Id == id)//Tittar om det finns ett matchande ID nummer i min lista
                 {
-                    Console.Clear();
-                    _contacts = _contacts.Where(x => x.Id != id).ToList();
-                    Console.Write($"Contact \"{item.FullName}\" Removed");
-                    fileHelper.Save(_contacts);
-                    Console.WriteLine("\nContact Succesfully Removed! :) :)");
+                    Console.Clear();//Rensar bort tidigare text för att få bort "Wrong ID"
+                    _contacts = _contacts.Where(x => x.Id != id).ToList(); //Med ett lamba uttryck tar jag bort kontakten från min lista 
+                    Console.Write($"Contact \"{item.FullName}\" Removed"); //Meddelar vilken kontakt som har tagits bort
+                    fileHelper.Save(_contacts); //Listan sparas
+                    Console.WriteLine("\nContact Succesfully Removed! :) :)"); //Meddelar ovan
                     break;
-                }
             }
-            Console.ReadKey();
+        }
+            Console.ReadKey(); //Saktar ner för att visa ovan meddelande
         }
 
-        public void Update(int id, string optionsNumber, string newValue)
+        public void Update(int id, string optionsNumber) 
         {
-
-            switch (optionsNumber)
+            switch (optionsNumber) //Switchsats för att se vad användaren vill uppdatera
             {
                 case "1":
-                    foreach (var item in _contacts)
+                    foreach (var item in _contacts) 
                     {
-                        if (id == item.Id)
+                        if (id == item.Id) // Hittar korrekt kontakt
                         {
-                            item.FirstName = newValue;
+                            Console.Write("First name: ");
+                            item.FirstName = Console.ReadLine() ?? null!; //uppdaterar efter användarens val
+                            fileHelper.Save(_contacts); //Sparar uppdateringen
+                            Console.Write("\nContact succesfully Uppdated! :) :)"); //Meddelar användaren
+                            Console.ReadKey();//Saktar ner
                         }
                     }
                     break;
@@ -78,7 +81,11 @@ namespace AddressBook.Helpers
                     {
                         if (id == item.Id)
                         {
-                            item.LastName = newValue;
+                            Console.Write("Last name: ");
+                            item.LastName = Console.ReadLine() ?? null!;
+                            fileHelper.Save(_contacts);
+                            Console.Write("\nContact succesfully Uppdated! :) :)");
+                            Console.ReadKey();
                         }
                     }
                     break;
@@ -87,7 +94,11 @@ namespace AddressBook.Helpers
                     {
                         if (id == item.Id)
                         {
-                            item.PhoneNumber = newValue;
+                            Console.Write("Phone number: ");
+                            item.PhoneNumber = Console.ReadLine() ?? null!;
+                            fileHelper.Save(_contacts);
+                            Console.Write("\nContact succesfully Uppdated! :) :)");
+                            Console.ReadKey();
                         }
                     }
                     break;
@@ -96,7 +107,11 @@ namespace AddressBook.Helpers
                     {
                         if (id == item.Id)
                         {
-                            item.Email = newValue;
+                            Console.Write("Email: ");
+                            item.Email = Console.ReadLine() ?? null!;
+                            fileHelper.Save(_contacts);
+                            Console.Write("\nContact succesfully Uppdated! :) :)");
+                            Console.ReadKey();
                         }
                     }
                     break;
@@ -105,7 +120,11 @@ namespace AddressBook.Helpers
                     {
                         if (id == item.Id)
                         {
-                            item.SteetAddress = newValue;
+                            Console.Write("Street address: ");
+                            item.SteetAddress = Console.ReadLine() ?? null!;
+                            fileHelper.Save(_contacts);
+                            Console.Write("\nContact succesfully Uppdated! :) :)");
+                            Console.ReadKey();
                         }
                     }
                     break;
@@ -114,7 +133,11 @@ namespace AddressBook.Helpers
                     {
                         if (id == item.Id)
                         {
-                            item.PostalCode = newValue;
+                            Console.Write("PostalCode: ");
+                            item.PostalCode = Console.ReadLine() ?? null!;
+                            fileHelper.Save(_contacts);
+                            Console.Write("\nContact succesfully Uppdated! :) :)");
+                            Console.ReadKey();
                         }
                     }
                     break;
@@ -123,21 +146,23 @@ namespace AddressBook.Helpers
                     {
                         if (id == item.Id)
                         {
-                            item.City = newValue;
+                            Console.Write("City: ");
+                            item.City = Console.ReadLine() ?? null!;
+                            fileHelper.Save(_contacts);
+                            Console.Write("\nContact succesfully Uppdated! :) :)");
+                            Console.ReadKey();
                         }
                     }
                     break;
                 default:
+                    Console.Write("Wrong option, going back to main menu");
+                    Console.ReadKey();
                     break;
             }
-            fileHelper.Save(_contacts);
-            Console.Write("\nContact succesfully Uppdated! :) :)");
-            Console.ReadKey();
-
         }
         public void ReadFile()
         {
-            _contacts = fileHelper.Read();
+            _contacts = fileHelper.Read(); //Hämtar listan från fil och lägger in listan i applikationen
         }
 
     }

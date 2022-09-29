@@ -18,20 +18,20 @@ namespace AddressBook.Helpers
     }
     internal class FileHelper : IFileHelper
     {
-        private string _filePath = @$"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\AddressBook.json";
-        public void NewFilePath(string NewFilePath)
+        private string _filePath = @$"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\AddressBook.json"; //Standard sök och sparväg för filen
+        public void NewFilePath(string NewFilePath) //hämtar in en ny sökväg till filen
         {
-            if (NewFilePath == null!) { }
-            else { _filePath = NewFilePath; }
+            if (NewFilePath == null!) { } //Om sökvägen är tom, vill jag inte spara den
+            else { _filePath = NewFilePath; } //Finns det text så sparar jag 
         }
-        public void Save(List<Contact> list)
+        public void Save(List<Contact> list) //Hämtar lista
         {
-            try
+            try //Försöker att =
             {
-                using var sw = new StreamWriter(_filePath);
-                sw.WriteLine(JsonConvert.SerializeObject(list));
+                using var sw = new StreamWriter(_filePath); //Spara med sökvägen
+                sw.WriteLine(JsonConvert.SerializeObject(list)); //Konverterar och sparar den som ett Json objekt.
             }
-            catch { Console.WriteLine("Unable to save! Check File Path!"); Console.ReadKey(); }
+            catch { Console.WriteLine("Unable to save! Check File Path!"); Console.ReadKey(); } //Lyckas jag inte spara den meddelar jag användaren det
         }
         public List<Contact> Read()
         {
@@ -39,13 +39,13 @@ namespace AddressBook.Helpers
             try
             {
 
-                using var sr = new StreamReader(_filePath);
-                Console.Write("Addressbook found... Press a Key!");
+                using var sr = new StreamReader(_filePath); // Letar efter en sparad fil
+                Console.Write("Addressbook found... Press a Key!"); //meddelar att app hittat filen
                 Console.ReadKey();
-                return JsonConvert.DeserializeObject<List<Contact>>(sr.ReadToEnd());
+                return JsonConvert.DeserializeObject<List<Contact>>(sr.ReadToEnd()); //retunerar filen
 
             }
-            catch { Console.Write("No adressbook to found, Create a new addressbook... Press a Key!"); Console.ReadKey(); }
+            catch { Console.Write("No adressbook to found, Create a new addressbook... Press a Key!"); Console.ReadKey(); } //Meddelar användaren att app kan inte hitta filen
             return null!;
         }
 
