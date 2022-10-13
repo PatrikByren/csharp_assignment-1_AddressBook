@@ -22,10 +22,11 @@ namespace AddressBook.Helpers
     internal class ContactHelper : IContactHelper //Jag kodar upp mitt interface
     {
         IFileHelper fileHelper = new FileHelper(); //Instancerar min FileHelper.
-        private List<Contact> _contacts = new List<Contact>(); //Skapar en ny lista
+        private List<Contact>? _contacts; //Min lista
         public void Create(Contact contact)
         {
-            _contacts.Add(contact); //Kontakten jag tar emot Adderar jag till listan
+
+            _contacts!.Add(contact); //Kontakten jag tar emot Adderar jag till listan
             _contacts = _contacts.OrderBy(x => x.Id).ToList(); //Jag sorterar listan på ID nummer, för att när jag sätter ID numret så är min kod byggd att den måste sorteras för att inte riskera att få samma ID nummer som en tidigare kontakt.
             fileHelper.Save(_contacts); //Jag sparar min kontakt till fil
             Console.Write("\nContact Succesfully created! :) :)"); //Har systemet inte kraschat så har kontakten sparas
@@ -34,7 +35,7 @@ namespace AddressBook.Helpers
         
         public IEnumerable<Contact> GetAll()
         {
-            return _contacts; //Kallar man på denna metod så får man tillbaka en LÄSbar lista! 
+            return _contacts; //Kallar man på denna metod så får man tillbaka en Läsbar lista! 
         }
 
         public Contact GetDetails(int id)
@@ -162,8 +163,11 @@ namespace AddressBook.Helpers
         }
         public void ReadFile()
         {
-            _contacts = fileHelper.Read(); //Hämtar listan från fil och lägger in listan i applikationen
-            
+           _contacts = fileHelper.Read(); //Hämtar listan från fil och lägger in listan i applikationen
+            if (_contacts == null)
+            {
+                _contacts = new List<Contact>(); //Gör en ny tom lista om det inte finns en lista sparad
+            }
         }
 
     }

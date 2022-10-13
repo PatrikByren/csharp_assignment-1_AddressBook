@@ -115,17 +115,16 @@ namespace AddressBook.Helpers
             Contact contact = new Contact(); //Gör en tom kontakt
             int id = 0;
             int contactId=0;
-            foreach (var item in contactHelper.GetAll())
-            {
-                contactId = item.Id;
-                id++;
-                if (contactId != id) { break; }
-            }
+                foreach (var item in contactHelper.GetAll())
+                {
+                    contactId = item.Id;
+                    id++;
+                    if (contactId != id) { break; }
+                }
             if (contactId == id)
             {
                 id++;
             }
-
             contact.Id = id; //Sätter ID'et med koden ovan, kommer bli 1, 2, 3, 4 osv tar man bort kontakt kommer nästa kontakt få ärva dens nummer
             Console.Write("First name: ");
             contact.FirstName = Console.ReadLine() ?? "";
