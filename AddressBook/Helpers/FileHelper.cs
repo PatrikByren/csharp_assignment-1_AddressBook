@@ -45,7 +45,7 @@ namespace AddressBook.Helpers
                 return JsonConvert.DeserializeObject<List<Contact>>(sr.ReadToEnd()); //retunerar filen
 
             }
-            catch { Console.Write("No adressbook to found, Create a new addressbook... Press a Key!"); Console.ReadKey(); } //Meddelar användaren att app kan inte hitta filen
+            catch { Console.Write("No adressbook found, Create a new addressbook... Press a Key!"); Console.ReadKey(); } //Meddelar användaren att app kan inte hitta filen
             return null!;
         }
 

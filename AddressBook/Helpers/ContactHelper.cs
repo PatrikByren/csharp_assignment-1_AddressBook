@@ -31,7 +31,7 @@ namespace AddressBook.Helpers
             Console.Write("\nContact Succesfully created! :) :)"); //Har systemet inte kraschat så har kontakten sparas
             Console.ReadKey();// jag saktar ner och låter användaren se det
         }
-
+        
         public IEnumerable<Contact> GetAll()
         {
             return _contacts; //Kallar man på denna metod så får man tillbaka en LÄSbar lista! 
@@ -163,6 +163,7 @@ namespace AddressBook.Helpers
         public void ReadFile()
         {
             _contacts = fileHelper.Read(); //Hämtar listan från fil och lägger in listan i applikationen
+            
         }
 
     }

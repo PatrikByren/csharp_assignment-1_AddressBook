@@ -52,7 +52,7 @@ namespace AddressBook.Helpers
                         }
                         break;
                     case "4":
-                        Console.Write("Enter the new file path and OR just press Enter to exit to main menu...\nNew file path / Enter:");
+                        Console.Write("Enter the new file path and Enter OR just press Enter to exit to main menu...\nNew file path and/or Enter:");
                         fileHelper.NewFilePath(Console.ReadLine() ?? null!); //Kallar på metoden och skickar med det som har skrivits, Null värde är OK.
                         
                         break;
@@ -80,7 +80,7 @@ namespace AddressBook.Helpers
             try
             {
                 int idOption = int.Parse(Console.ReadLine() ?? "");
-                Contact contact = contactHelper.GetDetails(idOption); //Gör en kontakt med hjälp av metoden.
+                Contact contact = contactHelper.GetDetails(idOption); //Hämtar en kontakt med hjälp av metoden.
                 Console.Clear();
                 Console.WriteLine("----- CONTACT MENU -----\n");
                 Console.WriteLine($"{contact.FullName}\t\nPhone number: {contact.PhoneNumber}\nEmail: " +
@@ -114,7 +114,7 @@ namespace AddressBook.Helpers
         {
             Contact contact = new Contact(); //Gör en tom kontakt
             int id = 0;
-            int contactId = 0;
+            int contactId=0;
             foreach (var item in contactHelper.GetAll())
             {
                 contactId = item.Id;
